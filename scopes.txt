@@ -1,0 +1,45 @@
+OAuth2 Scopes
+
+
+
+scope
+    the scopes requested in your authorization url, space-delimited 
+
+    API_ENDPOINT = 'https://discord.com/api/v8'
+CLIENT_ID = '332269999912132097'
+CLIENT_SECRET = '937it3ow87i4ery69876wqire'
+REDIRECT_URI = 'https://nicememe.website'
+
+def exchange_code(code):
+  data = {
+    'client_id': CLIENT_ID,
+    'client_secret': CLIENT_SECRET,
+    'grant_type': 'authorization_code',
+    'code': code,
+    'redirect_uri': REDIRECT_URI,
+    'scope': 'identify email connections'
+  }
+  headers = {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+  r = requests.post('%s/oauth2/token' % API_ENDPOINT, data=data, headers=headers)
+  r.raise_for_status()
+  return r.json()
+
+
+client_id	
+    your app's client id
+
+scope	
+    needs to include bot for the bot flow
+
+permissions	
+    the permissions you're requesting
+
+guild_id	
+    pre-fills the dropdown picker with a guild for the user
+
+disable_guild_select	
+    true or false—disallows the user from changing the guild dropdown
+
+In the case of bots, the scope parameter should be set to bot. There's also a new parameter, permissions, which is an integer corresponding to the permission calculations for the bot. You'll also notice the absence of response_type and redirect_uri. Bot authorization does not require these parameters because there is no need to retrieve the user's access token.
